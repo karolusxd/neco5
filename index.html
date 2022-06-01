@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>DICE FOR YOUR SOUL</title>
+    <style>
+        body {
+            margin: 0;
+        }
+
+        #how-to {
+            position: fixed;
+            top: 10px;
+            left: 10px;
+        }
+
+        #diceshou {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            color: #000;
+        }
+    </style>
+</head>
+
+<body>
+    <span id="how-to">画面をクリックしてサイコロ（？）を転がそう！</span>
+    <span class="textdice" id="diceshou"></span>
+    <script>
+        var vel = [5, 0];
+        var screen = [0, 0];
+        var pos = [10, 10];
+        var diceshou = document.getElementById("diceshou");
+
+        window.onload = function () {
+            document.getElementById("diceshou").innerHTML = Math.floor(Math.random() * 6) + 1;
+            render();
+        }
+
+        function render() {
+            screen[0] = wwidth;
+            screen[1] = wheight;
+            var wheight = window.innerHeight;
+            var wwidth = window.innerWidth;
+            vel[0] *= 0.999;
+            vel[1] += 0.3;
+            pos[0] += vel[0];
+            pos[1] += vel[1];
+            diceshou.style.top = pos[1] + "px";
+            diceshou.style.left = pos[0] + "px";
+
+            if ((pos[1] + 20) > wheight) {
+                vel[1] = (Math.abs(vel[1]) * -0.8);
+                if (Math.abs(vel[1]) > 0.5) {
+                    var diceval = Math.floor(Math.random() * 6) + 1;
+                    diceshou.innerHTML = diceval;
+                    if (diceval == 1) {
+                        diceshou.style.color = "#ff0000";
+                    } else {
+                        diceshou.style.color = "#000";
+                    }
+                }
+            }
+
+            setTimeout(function () {
+                render();
+            }, 20)
+        }
+
+        window.onclick = function (e) {
+            pos[0] = e.clientX;
+            pos[1] = e.clientY;
+            vel = [Math.floor(Math.random() * 10) - 5, 0]
+        }
+    </script>
+</body>
+
+</html>
